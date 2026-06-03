@@ -3,6 +3,8 @@
   "outputDirectory": "Frontend_ovacare/dist",
   "framework": "vite",
   "rewrites": [
+    { "source": "/auth/(.*)", "destination": "/api/index.py" },
+    { "source": "/profile/(.*)", "destination": "/api/index.py" },
     { "source": "/api/(.*)", "destination": "/api/index.py" }
   ]
 }
