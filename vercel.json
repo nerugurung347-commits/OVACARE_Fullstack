@@ -1,0 +1,8 @@
+{
+  "buildCommand": "cd Frontend_ovacare && npm install && npm run vercel-build",
+  "outputDirectory": "Frontend_ovacare/dist",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.py" }
+  ]
+}
