@@ -1,0 +1,238 @@
+## Ovacare MVP — Setup Summary for Future Reference
+
+### Step 1: Project Scaffolding
+```bash
+npm create vite@latest . -- --template react-ts
+```
+Created a React + TypeScript project using Vite in the current directory.
+
+### Step 2: Dependencies Installed
+```bash
+npm install
+npm install -D tailwindcss @tailwindcss/vite
+npm install react-router-dom@6
+```
+- **Tailwind CSS v4** + Vite plugin (`@tailwindcss/vite`)
+- **React Router DOM v6** (installed but not yet wired up)
+
+### Step 3: Vite Configuration
+**File: `vite.config.ts`**
+Added the Tailwind CSS Vite plugin:
+```ts
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+})
+```
+
+### Step 4: Tailwind v4 Theme Configuration
+**File: `src/index.css`**
+Tailwind v4 uses CSS-based configuration (not `tailwind.config.js`):
+```css
+@import "tailwindcss";
+
+@theme {
+  --color-primary-100: #EEF2EE;
+  --color-primary-500: #5C7A5C;
+  --color-primary-600: #4A6A4A;
+}
+```
+These CSS variables enable `bg-primary-100`, `text-primary-500`, `text-primary-600` etc.
+
+### Step 5: Clean App.tsx Placeholder
+**File: `src/App.tsx`**
+```tsx
+function App() {
+  return (
+    <div className="min-h-screen bg-primary-100 flex items-center justify-center">
+      <h1 className="text-3xl font-bold text-primary-600">
+        Ovacare App
+      </h1>
+    </div>
+  )
+}
+export default App
+```
+
+### Step 6: Boilerplate Cleanup
+Removed unused files:
+- `src/App.css`
+- `src/assets/react.svg`
+
+### Key Lesson Learned
+**Tailwind v4 changed configuration entirely.** The traditional `tailwind.config.js` is ignored. Custom theme values must be defined using `@theme` blocks in CSS with `@import "tailwindcss"` instead of the old `@tailwind base/components/utilities` directives.
+
+### What's Ready
+| Feature | Status |
+|---|---|
+| Vite + React + TypeScript | ✅ Working |
+| Tailwind CSS v4 | ✅ Configured with sage green palette |
+| Sage green brand colors | ✅ `primary-100`, `primary-500`, `primary-600` |
+| React Router v6 | ✅ Installed, not yet wired |
+| Dev server | ✅ `npm run dev` → `localhost:5173` |
+| Clean App.tsx | ✅ Ready for page/component building |
+
+### What's Next (Not Done Yet)
+- Wire up React Router in `main.tsx` with `BrowserRouter`
+- Create page components (Home, Onboarding, Dashboard, etc.)
+- Build reusable UI components
+- Add navigation/layout components
+ProgressBar Component:
+- Created at src/components/ProgressBar.tsx
+- Props: currentStep (number), totalSteps (number)
+- Shows completed steps with sage green + checkmark
+- Shows current step with darker sage + number
+- Shows upcoming steps with light grey circle
+- Shows "Step X of 4" label below
+- Tested and working correctly in browser
+FormField Component:
+- Created at src/components/FormField.tsx
+- Props: label, type (text/email/password/date/select),
+  value, onChange, error, touched, placeholder, options
+- Shows error only when touched AND error both true
+- Red border on error state
+- Sage green focus border using primary-500
+- Supports both input and select dropdown types
+- Tested and ready to use in pages
+Button Component:
+- Created at src/components/Button.tsx
+- Props: label, onClick, variant (primary/secondary),
+  disabled, loading, type, fullWidth
+- Primary: sage green background, white text
+- Secondary: white background, sage green border
+- Disabled state: grey, not clickable
+- Loading state: shows "Loading..." text
+- Smooth hover transitions
+- Ready to use in all pages
+App.tsx — Central State + Routing:
+- BrowserRouter added to main.tsx
+- Central state in App.tsx for: auth, personal, 
+  cycle, preferences
+- Routes configured:
+  / → LoginPage
+  /personal → PersonalDetailsPage
+  /cycle → CycleSetupPage
+  /preferences → PreferencesPage
+  /confirmed → ConfirmationPage
+- Props down + callbacks up pattern implemented
+- navigate() called after each onComplete
+- src/types.ts created with all TypeScript interfaces
+- Placeholder pages in App.tsx — ready to replace
+App.tsx + Routing — Complete:
+- BrowserRouter in main.tsx
+- Central state in App.tsx
+- All 5 routes configured
+- Placeholder pages working
+- types.ts created with all interfaces
+- Browser shows "Login Page" at localhost:5174
+LoginPage — Complete:
+- Created at src/pages/LoginPage.tsx
+- Email + password fields with validation
+- Errors show only on blur (touched pattern)
+- Sign In button disabled until both fields valid
+- Calls onComplete navigating to /personal
+- Ovacare branding with tagline
+- Tested and all validation working correctly
+PersonalDetailsPage — Complete:
+- Created at src/pages/PersonalDetailsPage.tsx
+- Shows ProgressBar at Step 1 of 4
+- Collects firstName, lastName, age, city
+- Validation on blur for all fields
+- Age must be number between 16-60
+- Continue button disabled until all valid
+- Navigates to /cycle on success
+- Tested and working correctly
+CycleSetupPage — Complete:
+- Created at src/pages/CycleSetupPage.tsx
+- Shows ProgressBar at Step 2 of 4
+- Date picker for last period start date
+- Cycle length dropdown (21-35 days)
+- Auto-detects phase from date selected
+- Phase card shows emoji + name + description
+- Phase colours: purple/green/yellow/orange
+- Continue enabled when date is selected
+- Navigates to /preferences on continue
+- Tested and working correctly
+PreferencesPage — Complete:
+- Created at src/pages/PreferencesPage.tsx
+- Shows ProgressBar at Step 3 of 4
+- Three select dropdowns:
+  cuisine, healthGoal, movementType
+- All dropdowns required before submit
+- Continue disabled until all selected
+- Navigates to /confirmed on submit
+- Tested and working correctly
+ConfirmationPage — Complete:
+- Created at src/pages/ConfirmationPage.tsx
+- Shows green checkmark circle
+- Displays "Welcome to Ovacare, [firstName]!"
+- Shows detected cycle phase with emoji
+  and phase-specific message
+- Shows preferences summary card
+- Saves all data to localStorage on mount
+- Get Started resets state and returns to login
+- Full app flow tested end to end — working
+
+FULL APP COMPLETE:
+All 5 pages working, all 3 components working,
+navigation flow Login → Personal → Cycle → 
+Preferences → Confirmation all tested.
+Follow-up 1 — Branding Polish:
+- Added sage green logo circle with 🌿 
+  emoji above Ovacare title on LoginPage
+- Added elegant decorative divider between
+  tagline and form fields
+- LoginPage now looks premium and branded
+- Only LoginPage.tsx was modified
+Follow-up 2 — Back Button Navigation:
+- Added ← Back button to PersonalDetailsPage,
+  CycleSetupPage and PreferencesPage
+- Uses useNavigate(-1) for browser history
+- Styled as ghost button in sage green text
+- Positioned top left of white card 
+  above ProgressBar
+- Not shown on Login or Confirmation pages
+- Tested and working correctly
+Follow-up 3 — Medical Advisory Logic:
+- Added 90-day period check to 
+  ConfirmationPage.tsx
+- If days since last period > 90:
+  Shows advisory screen with orange 
+  warning circle
+- Heading: "Let's Check In First"
+- Two buttons: "Speak to a GP" links 
+  to healthdirect.gov.au and 
+  "Continue to Ovacare" shows success
+- If days <= 90: shows existing 
+  success screen unchanged
+- Tested with old date — working correctly
+
+Sign Up and Sign In Pages:
+- Replaced LoginPage with two separate pages
+- SignUpPage at / — creates credentials 
+  saved to localStorage key: ovacareUser
+- SignInPage at /login — verifies against 
+  stored credentials
+- Strong password validation: 8+ chars,
+  letter, number, symbol
+- Invalid credentials shows red error banner
+- Consent checkbox added to Sign Up
+
+Age Validation Update:
+- PersonalDetailsPage accepts age 12-50
+- Error: "Please enter a valid age 
+  between 12 and 50"
+
+Page Transitions:
+- Fade-in animation added to all pages
+- CSS animation in index.css
+
+FINAL APP STATUS:
+All features complete and tested.
+Full flow: Sign Up → Sign In → 
+Personal Details → Cycle Setup → 
+Preferences → Confirmation (Success 
+or Advisory)
+Both successful and unsuccessful 
+outcomes demonstrated.
